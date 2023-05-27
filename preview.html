@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,46 +9,66 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <title>SmartSurvey</title>
-  </head>
+</head>
+
 <body>
     <header>
         <nav>
-          <div class="logo">
-            <p>SmartSurvey</p>
-          </div>
-          </div>
-          <ul class="menu">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="Survey.html">Surveys</a></li>
-            <li><a href="preview.html">Preview</a></li>
-          </ul>
-          
-          <ion-icon class="hamburger" name="menu-outline"></ion-icon>
-        
-          <!-- <div class="profile">
+            <div class="logo">
+                <p>SmartSurvey</p>
+            </div>
+            </div>
+            <ul class="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Survey.html">Surveys</a></li>
+                <li><a href="preview.html">Preview</a></li>
+            </ul>
+
+            <ion-icon class="hamburger" name="menu-outline"></ion-icon>
+
+            <!-- <div class="profile">
             <img src="profile.png" alt="User Profile">
           </div> -->
         </nav>
-      </header>
-      <main class="main2">
+    </header>
+    <main class="main2">
         <form id="options-form">
             <div class="input-area">
-        <h1>Questions</h1>
-        <div id="options-container"></div>
-        <button type="submit">Submit</button>
-    </div>
-    </form>
-</main>
+                <div id="title-container">
+                    <div>Title:</div>
+                </div>
+                <h1>Questions</h1>
+                <div id="options-container"></div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </main>
     <script>
-        function displayOptions() {
+        function display() {
             var optionsContainer = document.getElementById("options-container");
+            var titleContainer = document.getElementById("title-container")
 
             var options = JSON.parse(localStorage.getItem("options"));
+            var title = JSON.parse(localStorage.getItem("titles"))
 
+
+            if (title && title.length > 0) {
+                for (var i = 0; i < title.length; i++) {
+                    var heading = title[i];
+                    var headingDiv = document.createElement("div");
+                    headingDiv.className = "heading";
+                    var headingTitle = document.createElement("div");
+                    headingTitle.className = "heading-title";
+                    headingTitle.textContent = heading.title;
+
+                    headingDiv.appendChild(headingTitle);
+
+                    titleContainer.appendChild(headingDiv);
+                }
+            }
             if (options && options.length > 0) {
                 for (var i = 0; i < options.length; i++) {
                     var question = options[i];
-
                     var questionDiv = document.createElement("div");
                     questionDiv.className = "question";
 
@@ -79,17 +100,17 @@
                 }
             } else {
                 var noOptionsMessage = document.createElement("p");
-                noOptionsMessage.textContent = "No options available.";
+                noOptionsMessage.textContent = "No questions available.";
 
                 optionsContainer.appendChild(noOptionsMessage);
             }
         }
 
-        displayOptions();
+        display();
 
-        document.getElementById("options-form").addEventListener("submit", function(event) {
+        document.getElementById("options-form").addEventListener("submit", function (event) {
             event.preventDefault();
-            
+
             var selectedOptions = document.querySelectorAll('input[type="radio"]:checked');
             var selectedValues = Array.from(selectedOptions).map(function (option) {
                 return option.value;
@@ -98,6 +119,7 @@
             console.log(selectedValues);
         });
     </script>
-<script src="hamburger.js"></script>
+    <script src="hamburger.js"></script>
 </body>
+
 </html>
